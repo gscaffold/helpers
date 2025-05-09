@@ -1,0 +1,48 @@
+version: "2"
+
+output:
+  formats:
+    text:
+      path: golangci.out
+
+linters:
+  default: all
+  disable:
+    - copyloopvar
+    - intrange
+    - gochecknoglobals   # 不强制要求无全局变量
+    - gochecknoinits     # 不强制要求无 init 函数
+    - wsl                # 忽略空白行检查
+    - nlreturn           # 不强制 return 前后空行
+    - testpackage        # 测试包命名不强制
+    - noctx              # 不强制所有函数都接受 context.Context
+    - gosec              # 可选：暂时不启用安全扫描，如有需要可取消注释
+    - godot              # 不检查标点符号
+    - gosmopolitan       # 暂时不需要国际化
+    - paralleltest       # 不强制测试函数使用 parallel
+    - varnamelen         # 暂时不检查变量命名长度
+    - ireturn
+  exclusions:
+    presets:
+      - comments
+      - std-error-handling
+      - common-false-positives
+      - legacy
+    rules:
+      - linters:
+        - mnd
+        text: "Magic number"
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+
+issues:
+  new: true
+
+severity:
+  default: error

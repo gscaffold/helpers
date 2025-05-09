@@ -23,3 +23,6 @@ go.work.sum
 
 # env file
 .env
+
+# 开发阶段先不放开, 等开发完毕再放开
+.github/workflows
