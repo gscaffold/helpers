@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"os"
+	"syscall"
 
 	"github.com/gscaffold/helpers/app"
 	example_pb "github.com/gscaffold/helpers/examples/rpc/proto"
@@ -35,7 +37,7 @@ func main() {
 					"client received: name:%s, word:%s", name, resp.Word)
 			}
 
-			logger.Info(ctx, "exit with ctrl+c.")
+			syscall.Kill(os.Getpid(), syscall.SIGQUIT)
 		}
 		clientBundle := app.NewDefaultBundle("example-client",
 			clientFn,
