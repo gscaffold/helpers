@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "./;example_pb";
+
+package com.gscaffold.helpers.example;
+
+service HelperService {
+    rpc SayHello (SayHelloReq)returns (SayHelloResp);
+}
+
+message SayHelloReq {
+    string name = 1;
+}
+
+message SayHelloResp {
+    string word = 1;
+}
