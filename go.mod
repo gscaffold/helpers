@@ -8,8 +8,10 @@ replace github.com/gscaffold/utils => ../utils
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-basic/ipv4 v1.0.0
 	github.com/gscaffold/utils v0.0.0-00010101000000-000000000000
 	github.com/pkg/errors v0.9.1
+	github.com/xxl-job/xxl-job-executor-go v1.2.0
 	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.5

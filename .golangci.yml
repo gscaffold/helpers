@@ -32,6 +32,8 @@ linters:
       - linters:
         - mnd
         text: "Magic number"
+    paths:
+      - examples/*
 
 formatters:
   enable:
