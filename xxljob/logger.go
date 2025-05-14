@@ -11,10 +11,12 @@ type Logger struct{}
 
 var _ xxl.Logger = new(Logger)
 
+//nolint:goprintffuncname
 func (l Logger) Info(format string, args ...interface{}) {
 	logger.Infof(context.TODO(), format, args...)
 }
 
+//nolint:goprintffuncname
 func (l Logger) Error(format string, args ...interface{}) {
 	logger.Errorf(context.TODO(), format, args...)
 }

@@ -22,6 +22,7 @@ linters:
     - paralleltest       # 不强制测试函数使用 parallel
     - varnamelen         # 暂时不检查变量命名长度
     - ireturn
+    - depguard
   exclusions:
     presets:
       - comments

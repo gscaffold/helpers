@@ -3,7 +3,7 @@ package xxljob
 import (
 	"context"
 	"errors"
-	"fmt"
+	"strconv"
 
 	"github.com/gscaffold/helpers/logger"
 	xxl "github.com/xxl-job/xxl-job-executor-go"
@@ -14,7 +14,7 @@ type Cron struct {
 }
 
 func New(_opts ...Option) (*Cron, error) {
-	opts := &options{}
+	opts := &options{} //nolint:exhaustruct
 	for _, opt := range _opts {
 		opt(opts)
 	}
@@ -23,10 +23,10 @@ func New(_opts ...Option) (*Cron, error) {
 	// validate
 	{
 		if opts.serverAddr == "" {
-			return &Cron{}, errors.New("must have server_addr")
+			return &Cron{}, errors.New("must have server_addr") //nolint:err113
 		}
 		if opts.registryKey == "" {
-			return &Cron{}, errors.New("must have registry_key")
+			return &Cron{}, errors.New("must have registry_key") //nolint:err113
 		}
 	}
 
@@ -34,13 +34,14 @@ func New(_opts ...Option) (*Cron, error) {
 		xxl.ServerAddr(opts.serverAddr),
 		xxl.AccessToken(opts.accessToken),
 		xxl.ExecutorIp(opts.executorIP),
-		xxl.ExecutorPort(fmt.Sprint(opts.port)),
+		xxl.ExecutorPort(strconv.Itoa(opts.port)),
 		xxl.RegistryKey(opts.registryKey),
 		xxl.SetLogger(opts.logger),
 	)
 	client.Init()
 	client.Use(LogMiddleware, RecoverMiddleware)
-	logger.Infof(context.TODO(), "create new xxljob executor. name:%s, opts:%+v", opts.registryKey, opts)
+	logger.Infof(context.TODO(), "create new xxljob executor. name:%s, opts:%+v", opts.registryKey, opts) //nolint:golines
+
 	return &Cron{
 		Executor: client,
 	}, nil

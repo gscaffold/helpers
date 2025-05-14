@@ -13,7 +13,7 @@ func main() {
 	client, err := xxljob.New(
 		xxljob.ServerAddr("http://127.0.0.1:8666/xxl-job-admin"),
 		xxljob.AccessToken("default_token"),
-		xxljob.ExecutorIp("10.0.0.1"),
+		xxljob.ExecutorIP("10.0.0.1"),
 		xxljob.ExecutorPort(9999),
 		xxljob.RegistryKey("example"),
 	)
