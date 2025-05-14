@@ -125,6 +125,7 @@ func GetYamlByKind(kind, key string, out interface{}) {
 	}
 	err := yaml.Unmarshal([]byte(value), out)
 	if err != nil {
+		//nolint:golines
 		logger.Errorf(context.TODO(),
 			"get config error, unmarshal error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err)
 	}
