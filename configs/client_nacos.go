@@ -71,6 +71,7 @@ func (client *NacosClient) Get(kind, key string) string {
 }
 
 func (client *NacosClient) get(kind, key string) string {
+	//nolint:exhaustruct
 	value, err := client.client.GetConfig(vo.ConfigParam{
 		DataId: kind,
 		Group:  key,
@@ -98,14 +99,16 @@ func (client *NacosClient) MonitorChange(kind, key string, fn ConfigChangeCallba
 	if kind == "" {
 		kind = "DEFAULT_GROUP"
 	}
+	//nolint:exhaustruct
 	err := client.client.ListenConfig(vo.ConfigParam{
 		Group:  kind,
 		DataId: key,
-		OnChange: func(namespace, group, dataId, data string) {
+		OnChange: func(_, _, _, data string) {
 			fn(data)
 		},
 	})
 	if err != nil {
-		logger.Errorf(context.TODO(), "nacos listen config error. key:%s, kind:%s, err:%s", key, kind, err)
+		logger.Errorf(context.TODO(),
+			"nacos listen config error. key:%s, kind:%s, err:%s", key, kind, err.Error())
 	}
 }

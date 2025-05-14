@@ -14,7 +14,7 @@ func main() {
 	out := struct {
 		Addr string `json:"addr"`
 	}{}
-	configs.GetJson("test_json", &out)
+	configs.GetJSON("test_json", &out)
 	fmt.Printf("get config type_json:%+v\n", out)
 
 	// 从指定分组获取数据

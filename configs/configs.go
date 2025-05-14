@@ -29,7 +29,8 @@ func GetInt(key string) int {
 	}
 	intValue, err := strconv.ParseInt(value, 10, 64)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config format int error. key:%s,value:%s err:%s", key, value, err)
+		logger.Errorf(context.TODO(), "get config format int error. key:%s,value:%s err:%s",
+			key, value, err.Error())
 	}
 	return int(intValue)
 }
@@ -42,7 +43,7 @@ func GetIntOrDefault(key string, defaultValue int) int {
 	return value
 }
 
-func GetJson(key string, out interface{}) {
+func GetJSON(key string, out interface{}) {
 	value := Get(key)
 	if len(value) == 0 {
 		logger.Errorf(context.TODO(), "get config error, value is empty key:%s", key)
@@ -50,7 +51,8 @@ func GetJson(key string, out interface{}) {
 	}
 	err := json.Unmarshal([]byte(value), out)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config error, unmarshal error. key:%s, value:%s, err:%s", key, value, err)
+		logger.Errorf(context.TODO(),
+			"get config error, unmarshal error. key:%s, value:%s, err:%s", key, value, err)
 	}
 }
 
@@ -62,7 +64,8 @@ func GetYaml(key string, out interface{}) {
 	}
 	err := yaml.Unmarshal([]byte(value), out)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config error, unmarshal error. key:%s, value:%s, err:%s", key, value, err)
+		logger.Errorf(context.TODO(),
+			"get config error, unmarshal error. key:%s, value:%s, err:%s", key, value, err)
 	}
 }
 
@@ -86,7 +89,9 @@ func GetIntByKind(kind, key string) int {
 	}
 	intValue, err := strconv.ParseInt(value, 10, 64)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config format int error. kind:%s, key:%s,value:%s err:%s", kind, key, value, err)
+		logger.Errorf(context.TODO(),
+			"get config format int error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err.Error())
+		return 0
 	}
 	return int(intValue)
 }
@@ -99,7 +104,7 @@ func GetIntByKindOrDefault(kind, key string, defaultValue int) int {
 	return value
 }
 
-func GetJsonByKind(kind, key string, out interface{}) {
+func GetJSONByKind(kind, key string, out interface{}) {
 	value := GetByKind(kind, key)
 	if len(value) == 0 {
 		logger.Errorf(context.TODO(), "get config error, value is empty. kind:%s, key:%s", kind, key)
@@ -107,7 +112,8 @@ func GetJsonByKind(kind, key string, out interface{}) {
 	}
 	err := json.Unmarshal([]byte(value), out)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config error, unmarshal error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err)
+		logger.Errorf(context.TODO(),
+			"get config error, unmarshal error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err)
 	}
 }
 
@@ -119,7 +125,8 @@ func GetYamlByKind(kind, key string, out interface{}) {
 	}
 	err := yaml.Unmarshal([]byte(value), out)
 	if err != nil {
-		logger.Errorf(context.TODO(), "get config error, unmarshal error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err)
+		logger.Errorf(context.TODO(),
+			"get config error, unmarshal error. kind:%s, key:%s, value:%s, err:%s", kind, key, value, err)
 	}
 }
 

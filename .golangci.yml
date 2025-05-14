@@ -23,6 +23,7 @@ linters:
     - varnamelen         # 暂时不检查变量命名长度
     - ireturn
     - depguard
+    - funcorder
   exclusions:
     presets:
       - comments
