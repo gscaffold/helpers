@@ -18,3 +18,6 @@
 ```shell
 go get github.com/gscaffold/helpers
 ```
+
+## Roadmap
+- 支持 资源发现、服务发现
