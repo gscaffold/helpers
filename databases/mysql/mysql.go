@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"os"
-	"strings"
 	"sync/atomic"
 
 	"gorm.io/driver/mysql"
@@ -18,11 +16,17 @@ type DB struct {
 	next   uint64 // 用于多个读节点之间的负载均衡
 }
 
-// Open 创建一个数据库连接.
-// name: 自动从环境变量寻找该数据库的 dsn, 格式为 name, name_master, name_slaves
-func Open(name string, _opts ...Option) (*DB, error) {
-	opts := getDefaultOptions()
-	opts.master, opts.slaves = discovery(name)
+// Discovery 创建一个数据库连接.
+// name: 资源名称, 用于资源发现.
+func Discovery(name string, _opts ...Option) (*DB, error) {
+	return DiscoveryAppExclusive("", name, _opts...)
+}
+
+func DiscoveryAppExclusive(app, name string, _opts ...Option) (*DB, error) {
+	opts, err := initOptions(app, name)
+	if err != nil {
+		return &DB{}, err
+	}
 	for _, opt := range _opts {
 		opt(opts)
 	}
@@ -55,9 +59,9 @@ func Open(name string, _opts ...Option) (*DB, error) {
 
 }
 
-// MustOpen 是 Open 的一个变体，如果出错会 panic
-func MustOpen(name string, opts ...Option) *DB {
-	db, err := Open(name, opts...)
+// MustDiscovery 是 Discovery 的一个变体，如果出错会 panic
+func MustDiscovery(name string, opts ...Option) *DB {
+	db, err := Discovery(name, opts...)
 	if err != nil {
 		panic(err)
 	}
@@ -97,20 +101,6 @@ func closeGormDB(db *gorm.DB) error {
 	}
 	err = sqlDB.Close()
 	return errors.Wrap(err, "close gorm db error")
-}
-
-func discovery(name string) (masterDSN string, slaveDSNs []string) {
-	if name == "" {
-		return
-	}
-
-	masterDSN = os.Getenv("mysql_dsn_" + name)
-
-	if slaves := os.Getenv("mysql_slaves_dsn_" + name); slaves != "" {
-		slaveDSNs = strings.Split(slaves, ",")
-	}
-
-	return
 }
 
 func open(dsn string, opts *Options) (*gorm.DB, error) {

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gscaffold/helpers/databases"
+	"github.com/gscaffold/helpers/devops"
 	"github.com/gscaffold/helpers/internal/cgroup"
 	"github.com/gscaffold/utils"
 	"gorm.io/gorm/logger"
@@ -30,19 +31,31 @@ func (opts *Options) Validate() error {
 	return nil
 }
 
-func getDefaultOptions() *Options {
+func initOptions(app, name string) (*Options, error) {
+	master, err := devops.Discovery(devops.ResourceMySQL, app, name, "master")
+	if err != nil {
+		return &Options{}, err
+	}
+
+	slaves, err := devops.DiscoveryMany(devops.ResourceMySQL, app, name, "slave")
+	if err != nil {
+		return &Options{}, err
+	}
+
 	logLevel := logger.Info
 	if utils.IsProd() {
 		logLevel = logger.Warn
 	}
 
 	return &Options{
+		master:                 master,
+		slaves:                 slaves,
 		logLevel:               logLevel,
 		skipDefaultTransaction: true,
 		maxIdleConns:           cgroup.TotalCPU(),
 		maxOpenConns:           30 * cgroup.TotalCPU(),
 		maxLifeTime:            time.Minute * 5,
-	}
+	}, nil
 }
 
 type Option func(opts *Options)

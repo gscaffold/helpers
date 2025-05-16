@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	db := mysql.MustOpen("test")
+	db := mysql.MustDiscovery("test")
 
 	// insert
 	{
