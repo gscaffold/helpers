@@ -1,5 +1,9 @@
 /*
 devops 资源发现、服务发现相关代码.
+
+example dsn:
+- mysql: user:password@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True&loc=Local
+- redis: redis://user:password@localhost:6789/3?dial_timeout=3&db=1&read_timeout=6s&max_retries=2
 */
 package devops
 

@@ -14,6 +14,7 @@ require (
 	github.com/gscaffold/utils v0.0.0-00010101000000-000000000000
 	github.com/nacos-group/nacos-sdk-go/v2 v2.2.9
 	github.com/pkg/errors v0.9.1
+	github.com/redis/go-redis/v9 v9.8.0
 	github.com/stretchr/testify v1.9.0
 	github.com/xxl-job/xxl-job-executor-go v1.2.0
 	go.uber.org/zap v1.27.0
@@ -56,6 +57,7 @@ require (
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
