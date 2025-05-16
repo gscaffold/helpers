@@ -11,11 +11,11 @@ import (
 
 func main() {
 	client, err := xxljob.New(
-		xxljob.ServerAddr("http://127.0.0.1:8666/xxl-job-admin"),
-		xxljob.AccessToken("default_token"),
-		xxljob.ExecutorIP("10.0.0.1"),
-		xxljob.ExecutorPort(9999),
-		xxljob.RegistryKey("example"),
+		xxljob.OptionServerAddr("http://127.0.0.1:8666/xxl-job-admin"),
+		xxljob.OptionAccessToken("default_token"),
+		xxljob.OptionExecutorIP("10.0.0.1"),
+		xxljob.OptionExecutorPort(9999),
+		xxljob.OptionRegistryKey("example"),
 	)
 	if err != nil {
 		log.Fatal(err)

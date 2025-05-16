@@ -6,25 +6,25 @@ import (
 
 type Option func(bundle *HTTPBundle)
 
-func Port(port int) Option {
+func OptionPort(port int) Option {
 	return func(bundle *HTTPBundle) {
 		bundle.port = port
 	}
 }
 
-func Timeout(t time.Duration) Option {
+func OptionTimeout(t time.Duration) Option {
 	return func(bundle *HTTPBundle) {
 		bundle.timeout = t
 	}
 }
 
-func ReadTimeout(t time.Duration) Option {
+func OptionReadTimeout(t time.Duration) Option {
 	return func(bundle *HTTPBundle) {
 		bundle.readTimeout = t
 	}
 }
 
-func WriteTimeout(t time.Duration) Option {
+func OptionWriteTimeout(t time.Duration) Option {
 	return func(bundle *HTTPBundle) {
 		bundle.writeTimeout = t
 	}

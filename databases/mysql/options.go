@@ -47,7 +47,7 @@ func getDefaultOptions() *Options {
 
 type Option func(opts *Options)
 
-func WithOpenConfig(cfg databases.OpenConfig) Option {
+func OptionOpenConfig(cfg databases.OpenConfig) Option {
 	return func(opts *Options) {
 		if cfg.DSN != "" {
 			opts.master = cfg.DSN
@@ -58,7 +58,7 @@ func WithOpenConfig(cfg databases.OpenConfig) Option {
 	}
 }
 
-func WithSlavesOpenConfig(cfgs []databases.OpenConfig) Option {
+func OptionSlavesOpenConfig(cfgs []databases.OpenConfig) Option {
 	return func(opts *Options) {
 		for _, cfg := range cfgs {
 			if cfg.DSN != "" {
@@ -72,20 +72,20 @@ func WithSlavesOpenConfig(cfgs []databases.OpenConfig) Option {
 	}
 }
 
-func WithLogger(logger logger.Interface) Option {
+func OptionLogger(logger logger.Interface) Option {
 	return func(opts *Options) {
 		opts.logger = logger
 	}
 }
 
 // WithLoggerLevel 和 WithLogger 互斥, 优先采用 WithLogger
-func WithLoggerLevel(level logger.LogLevel) Option {
+func OptionLoggerLevel(level logger.LogLevel) Option {
 	return func(opts *Options) {
 		opts.logLevel = level
 	}
 }
 
-func WithDefaultTransaction() Option {
+func OptionDefaultTransaction() Option {
 	return func(opts *Options) {
 		opts.skipDefaultTransaction = false
 	}

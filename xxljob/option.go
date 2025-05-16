@@ -39,35 +39,35 @@ func (opts *options) LoadDefault() {
 	}
 }
 
-func ServerAddr(addr string) Option {
+func OptionServerAddr(addr string) Option {
 	return func(o *options) {
 		o.serverAddr = addr
 	}
 }
 
-// AccessToken 请求令牌
-func AccessToken(token string) Option {
+// OptionAccessToken 请求令牌
+func OptionAccessToken(token string) Option {
 	return func(o *options) {
 		o.accessToken = token
 	}
 }
 
-// ExecutorIP 设置执行器IP
-func ExecutorIP(ip string) Option {
+// OptionExecutorIP 设置执行器IP
+func OptionExecutorIP(ip string) Option {
 	return func(o *options) {
 		o.executorIP = ip
 	}
 }
 
-// ExecutorPort 设置执行器端口
-func ExecutorPort(port int) Option {
+// OptionExecutorPort 设置执行器端口
+func OptionExecutorPort(port int) Option {
 	return func(o *options) {
 		o.port = port
 	}
 }
 
-// RegistryKey 设置执行器标识
-func RegistryKey(registryKey string) Option {
+// OptionRegistryKey 设置执行器标识
+func OptionRegistryKey(registryKey string) Option {
 	return func(o *options) {
 		o.registryKey = registryKey
 	}
