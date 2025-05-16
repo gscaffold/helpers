@@ -31,7 +31,7 @@ func (opts *Options) Validate() error {
 	return nil
 }
 
-func initOptions(app, name string) (*Options, error) {
+func initOptions(app, name string, _opts ...Option) (*Options, error) {
 	master, err := devops.Discovery(devops.ResourceMySQL, app, name, "master")
 	if err != nil {
 		return &Options{}, err
@@ -47,7 +47,7 @@ func initOptions(app, name string) (*Options, error) {
 		logLevel = logger.Warn
 	}
 
-	return &Options{
+	opts := &Options{
 		master:                 master,
 		slaves:                 slaves,
 		logLevel:               logLevel,
@@ -55,7 +55,11 @@ func initOptions(app, name string) (*Options, error) {
 		maxIdleConns:           cgroup.TotalCPU(),
 		maxOpenConns:           30 * cgroup.TotalCPU(),
 		maxLifeTime:            time.Minute * 5,
-	}, nil
+	}
+	for _, opt := range _opts {
+		opt(opts)
+	}
+	return opts, nil
 }
 
 type Option func(opts *Options)

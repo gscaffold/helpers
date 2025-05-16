@@ -101,8 +101,8 @@ func (d ResourceType) String() string {
 }
 
 const (
-	ResourceMySQL   ResourceType = "MySQL"
-	ResourceRWRedis ResourceType = "Redis"
-	ResourceKafka   ResourceType = "Kafka"
-	ResourceStatsd  ResourceType = "Statsd"
+	ResourceMySQL  ResourceType = "MySQL"
+	ResourceRedis  ResourceType = "Redis" // redis://<user>:<pass>@localhost:6379/<db>
+	ResourceKafka  ResourceType = "Kafka"
+	ResourceStatsd ResourceType = "Statsd"
 )
