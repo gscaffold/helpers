@@ -19,6 +19,8 @@ func TotalCPU() int {
 	return cpuCnt
 }
 
+// 容器部署时, CPUNum 获取的是宿主的 CPU 数量, 容器只能使用一部分资源.
+// CPUQuota 可以更准确的预估容器可使用的资源, 故使用 CPUQuota 比 CPUNum 更合适.
 func totalCPU() int {
 	var cpu float64
 	if v := os.Getenv("GOMAXPROCS"); v != "" {
