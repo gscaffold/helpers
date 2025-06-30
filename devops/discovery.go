@@ -61,6 +61,7 @@ func Discovery(resource ResourceType, app, name, kind string) (string, error) {
 // app: 默认为空, app 独享资源时使用.
 // name: 资源名称
 // kind: 资源的类型, 如 master, slave, 是 name 的进一步细分.
+// 格式(kind==""): RES_{{type}}_{{app}}__{{name}}_ADDR
 func DiscoveryMany(resource ResourceType, app, name, kind string) (dsns []string, _ error) {
 	if resource == "" {
 		return []string{}, errors.New("must have resource")
