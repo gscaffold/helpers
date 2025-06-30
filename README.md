@@ -21,3 +21,22 @@ go get github.com/gscaffold/helpers
 
 ## Roadmap
 - 支持 资源发现、服务发现
+
+## QA
+问题一: googleapis/rpc/status ambiguous import
+```Bash
+go: github.com/gscaffold/helpers/rpc imports
+        google.golang.org/grpc imports
+        google.golang.org/grpc/internal/status imports
+        google.golang.org/genproto/googleapis/rpc/status: ambiguous import: found package google.golang.org/genproto/googleapis/rpc/status in multiple modules:
+        google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 (/home/wzs/.go/pkg/mod/google.golang.org/genproto@v0.0.0-20230410155749-daa745c078e1/googleapis/rpc/status)
+        google.golang.org/genproto/googleapis/rpc v0.0.0-20250324211829-b45e905df463 (/home/wzs/.go/pkg/mod/google.golang.org/genproto/googleapis/rpc@v0.0.0-20250324211829-b45e905df463/status)
+```
+
+解决方法: 显示指定包来源 `go get google.golang.org/genproto@latest`, 然后执行 `go mod tidy` 即可.
+
+参考: [oo-genproto avoid ambiguous import 2024-03-01](https://github.com/googleapis/go-genproto/issues/1015)
+
+---------
+
+
