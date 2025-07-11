@@ -5,32 +5,31 @@ import (
 	"net"
 
 	application "github.com/gscaffold/helpers/app"
-	xgrpc "github.com/gscaffold/helpers/rpc/grpc"
+	hgrpc "github.com/gscaffold/helpers/rpc/grpc"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
 type GRPCBundle struct {
 	name       string
-	Server     *grpc.Server
 	listenAddr string
 
-	serverFactory func() *grpc.Server
+	Server        *grpc.Server
+	serverOptions []grpc.ServerOption
 }
 
 var _ application.IBundle = new(GRPCBundle)
 
 func NewGRPCBundle(name string, opts ...GRPCOption) *GRPCBundle {
 	s := &GRPCBundle{
-		name:          name,
-		listenAddr:    "0.0.0.0:8000",
-		serverFactory: func() *grpc.Server { return xgrpc.NewServer() },
+		name:       name,
+		listenAddr: "0.0.0.0:8000",
 	}
 	for _, opt := range opts {
 		opt(s)
 	}
 
-	s.Server = s.serverFactory()
+	s.Server = hgrpc.NewServer(s.serverOptions...)
 
 	return s
 }

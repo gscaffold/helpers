@@ -20,4 +20,4 @@ server
 
 */
 
-package grpc
+package hgrpc

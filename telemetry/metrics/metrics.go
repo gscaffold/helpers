@@ -1,19 +1,69 @@
 package metrics
 
-/*
+import (
+	"context"
+	"sync"
+	"time"
 
-count
-UpDownCounter
-Gauge
-直方图
+	"github.com/gscaffold/helpers/logger"
+	"github.com/smira/go-statsd"
+)
 
-prome 实现
+var (
+	defaultClient *statsd.Client
+	once          sync.Once
+)
 
-add gin hook
-add grpc hook
-添加 loggerAndMetrics 语法糖
+type Tag = statsd.Tag
 
-mysql redis kafka 是否需要加? 必要性有点低, 如果发生错误, 一般都是针对特定表特定操作的,
-通过切面记录很难定义 metrics_name.
+func getClient() *statsd.Client {
+	if defaultClient == nil {
+		once.Do(func() {
+			// todo 测试
+			// defaultClient = statsd.NewClient()("127.0.0.1:8125")
+		})
+	}
+	return defaultClient
+}
 
-*/
+func Close() error {
+	if defaultClient == nil {
+		return nil
+	}
+	return getClient().Close()
+}
+
+func Incr(name string, tags ...Tag) {
+	getClient().Incr(name, 1, tags...)
+}
+
+func Count(name string, value int64, tags ...Tag) {
+	getClient().Incr(name, value, tags...)
+}
+
+func FCount(name string, value float64, tags ...Tag) {
+	getClient().FIncr(name, value, tags...)
+}
+
+func Guage(name string, value int64, tags ...Tag) {
+	getClient().Gauge(name, value, tags...)
+}
+
+func FGuage(name string, value float64, tags ...Tag) {
+	getClient().FGaugeDelta(name, value, tags...)
+}
+
+func Timing(name string, value time.Duration, tags ...Tag) {
+	getClient().Timing(name, value.Milliseconds(), tags...)
+}
+
+// TimingSince 耗时计算语法糖, defer TimingSince 直接计算耗时.
+func TimingSince(name string, now time.Time, tags ...Tag) {
+	Timing(name, time.Since(now), tags...)
+}
+
+// 语法糖, 输入日志并且打点
+func LoggerErrorAndMetrics(ctx context.Context, metric, format string, args ...interface{}) {
+	logger.Errorf(ctx, format, args...)
+	Incr(metric)
+}

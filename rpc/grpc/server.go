@@ -1,9 +1,11 @@
-package grpc
+package hgrpc
 
 import (
 	"context"
+	"strings"
 	"time"
 
+	"github.com/gscaffold/helpers/telemetry/metrics"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -20,7 +22,6 @@ func NewServer(opts ...grpc.ServerOption) *grpc.Server {
 			Time:                  time.Second,
 			Timeout:               time.Millisecond * 100,
 		}),
-		grpc.ChainUnaryInterceptor(WithServerTelemetry),
 	}
 	opts = append(opts, overwriteOpts...)
 
@@ -32,8 +33,21 @@ func NewServer(opts ...grpc.ServerOption) *grpc.Server {
 	return s
 }
 
-// todo 支持切面方法
-func WithServerTelemetry(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo,
-	handler grpc.UnaryHandler) (resp interface{}, err error) {
-	return handler(ctx, req)
+func ServerMetricsInterceptor(prefix string) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler) (resp interface{}, err error) {
+		path := strings.ReplaceAll(info.FullMethod, "/", ".")
+		metric := prefix + path
+		defer metrics.TimingSince(metric, time.Now())
+
+		resp, err = handler(ctx, req)
+		if err == nil {
+			metric += ".success"
+		} else {
+			metric += ".error"
+		}
+
+		metrics.Incr(metric)
+		return resp, err
+	}
 }

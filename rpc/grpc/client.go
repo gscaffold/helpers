@@ -1,4 +1,4 @@
-package grpc
+package hgrpc
 
 import (
 	"context"
@@ -31,7 +31,7 @@ func NewClient(ctx context.Context, target string, opts ...grpc.DialOption) (*cl
 	}
 	opts = append(opts, defaultOpts...)
 	overwriteOpts := []grpc.DialOption{
-		grpc.WithChainUnaryInterceptor(withClientTelemetry),
+		// grpc.WithChainUnaryInterceptor(ClientMetricsInterceptor),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`),
 	}
@@ -45,12 +45,6 @@ func NewClient(ctx context.Context, target string, opts ...grpc.DialOption) (*cl
 	return &client{conn: conn}, nil
 }
 
-// todo 支持切面方法
-func withClientTelemetry(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn,
-	invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-	return invoker(ctx, method, req, reply, cc, opts...)
-}
-
 func (client *client) GetConn() *grpc.ClientConn {
 	return client.conn
 }
@@ -61,4 +55,12 @@ func (client *client) Close() error {
 		return errors.Wrap(err, "close grpc conn error")
 	}
 	return nil
+}
+
+// todo 后续按需支持
+func ClientMetricsInterceptor(prefix string) grpc.UnaryClientInterceptor {
+	return func(ctx context.Context, method string, req, reply any,
+		cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+		return invoker(ctx, method, req, reply, cc, opts...)
+	}
 }
