@@ -2,11 +2,13 @@ package redis
 
 import "github.com/redis/go-redis/v9"
 
-func Discovery(name string, _opts ...Option) (redis.UniversalClient, error) {
+type UniversalClient = redis.UniversalClient
+
+func Discovery(name string, _opts ...Option) (UniversalClient, error) {
 	return DiscoveryAppExclusive("", name, _opts...)
 }
 
-func DiscoveryAppExclusive(app, name string, _opts ...Option) (redis.UniversalClient, error) {
+func DiscoveryAppExclusive(app, name string, _opts ...Option) (UniversalClient, error) {
 	opts, err := initOptions(app, name, _opts...)
 	if err != nil {
 		return nil, err
@@ -19,7 +21,7 @@ func DiscoveryAppExclusive(app, name string, _opts ...Option) (redis.UniversalCl
 	return client, nil
 }
 
-func MustDiscovery(name string, _opts ...Option) redis.UniversalClient {
+func MustDiscovery(name string, _opts ...Option) UniversalClient {
 	client, err := DiscoveryAppExclusive("", name, _opts...)
 	if err != nil {
 		panic(err)
