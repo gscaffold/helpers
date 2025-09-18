@@ -52,7 +52,7 @@ func Discovery(resource ResourceType, app, name, kind string) (string, error) {
 		return "", err
 	}
 	if len(dsns) == 0 {
-		return "", errors.New("no dsn")
+		return "", nil
 	}
 	return dsns[0], nil
 }
